@@ -74,7 +74,9 @@ export function PostForm({ submit }: PostFormProps) {
             </FormItem>
           )}
         />
-        <Button className="w-full max-w-lg">Create</Button>
+        <Button type="submit" className="w-full max-w-lg">
+          Create
+        </Button>
       </form>
     </Form>
   );
