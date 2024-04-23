@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { Form } from "./ui/form";
+import { Form, FormField, FormItem } from "./ui/form";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import {
@@ -29,9 +29,8 @@ export function PostForm() {
     defaultValues: { postTitle: "", postContent: "", tagOption: "" },
   });
   const { register, handleSubmit } = { ...form };
-
   return (
-    <Form {...form}>
+    <Form {...form} >
       <form className="flex flex-col items-center justify-center gap-5 mt-10">
         <Input
           {...register("postTitle")}
@@ -45,19 +44,27 @@ export function PostForm() {
           className="max-w-lg"
           placeholder="Post content"
         />
-        <Select {...register("tagOption")}>
-          <SelectTrigger className="max-w-lg">
-            <SelectValue placeholder="Select a tag" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="react">React</SelectItem>
-              <SelectItem value="next">Next</SelectItem>
-              <SelectItem value="svelte">Svelte</SelectItem>
-              <SelectItem value="angular">Angular</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <FormField
+          control={form.control}
+          name="tagOption"
+          render={({ field }) => (
+            <FormItem>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <SelectTrigger className="max-w-lg">
+                  <SelectValue placeholder="Select a tag" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="react">React</SelectItem>
+                    <SelectItem value="next">Next</SelectItem>
+                    <SelectItem value="svelte">Svelte</SelectItem>
+                    <SelectItem value="angular">Angular</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </FormItem>
+          )}
+        />
         <Button className="w-full max-w-lg">Create</Button>
       </form>
     </Form>
