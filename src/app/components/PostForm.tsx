@@ -18,9 +18,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const formSchema = z.object({
-  postTitle: z.string(),
-  postContent: z.string(),
-  tagOption: z.string(),
+  postTitle: z.string().min(1),
+  postContent: z.string().min(1),
+  tagOption: z.string().min(1),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
