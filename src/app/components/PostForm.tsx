@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Form, FormField, FormItem } from "./ui/form";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -23,15 +23,24 @@ const formSchema = z.object({
   tagOption: z.string(),
 });
 
-export function PostForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
+export type FormSchema = z.infer<typeof formSchema>;
+
+interface PostFormProps {
+  submit: SubmitHandler<FormSchema>;
+}
+
+export function PostForm({ submit }: PostFormProps) {
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { postTitle: "", postContent: "", tagOption: "" },
   });
   const { register, handleSubmit } = { ...form };
   return (
-    <Form {...form} >
-      <form className="flex flex-col items-center justify-center gap-5 mt-10">
+    <Form {...form}>
+      <form
+        className="flex flex-col items-center justify-center gap-5 mt-10"
+        onSubmit={handleSubmit(submit)}
+      >
         <Input
           {...register("postTitle")}
           type="text"
@@ -48,9 +57,9 @@ export function PostForm() {
           control={form.control}
           name="tagOption"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full max-w-lg">
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <SelectTrigger className="max-w-lg">
+                <SelectTrigger>
                   <SelectValue placeholder="Select a tag" />
                 </SelectTrigger>
                 <SelectContent>
