@@ -19,9 +19,10 @@ export type FormSchema = z.infer<typeof formSchema>;
 
 interface PostFormProps {
   readonly submit: SubmitHandler<FormSchema>;
+  readonly isEditing: boolean;
 }
 
-export function PostForm({ submit }: PostFormProps) {
+export function PostForm({ submit, isEditing }: PostFormProps) {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: { postTitle: '', postContent: '', tagOption: '' },
@@ -56,7 +57,7 @@ export function PostForm({ submit }: PostFormProps) {
           )}
         />
         <Button type="submit" className="w-full max-w-lg">
-          Create
+          {isEditing ? 'Update' : 'Create'}
         </Button>
       </form>
     </Form>
