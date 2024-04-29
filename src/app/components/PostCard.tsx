@@ -10,7 +10,7 @@ export function PostCard() {
         <CardDescription>Deploy your new project in one-click.</CardDescription>
       </CardHeader>
       <CardFooter className="flex justify-end">
-        <Link href="/blog" passHref>
+        <Link href="/blog/1" passHref>
           <Button>Read more...</Button>
         </Link>
       </CardFooter>
