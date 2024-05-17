@@ -6,11 +6,10 @@ import { ContentArea } from './ContentArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TitleInput } from './TitleInput';
 import { TagSelect } from './TagSelect';
-import { useQuery } from '@tanstack/react-query';
+import { Suspense } from 'react';
+import { Spinner } from '../ui/spinner';
 import { Button } from '../ui/button';
 import { z } from 'zod';
-import axios from 'axios';
-import { Tag } from '@prisma/client';
 
 const formSchema = z.object({
   postTitle: z.string().min(1, { message: 'Please add a title' }),
@@ -31,14 +30,6 @@ export function PostForm({ submit, isEditing }: PostFormProps) {
     defaultValues: { postTitle: '', postContent: '', tagOption: '' },
   });
   const { register, handleSubmit } = { ...form };
-
-  const { data: tags, isLoading: isLoadingTags } = useQuery<Tag[]>({
-    queryKey: ['tags'],
-    queryFn: async () => {
-      const response = await axios.get('/api/tags');
-      return response.data;
-    },
-  });
 
   return (
     <Form {...form}>
@@ -61,10 +52,12 @@ export function PostForm({ submit, isEditing }: PostFormProps) {
           control={form.control}
           name="tagOption"
           render={({ field }) => (
-            <FormItem {...field} className="w-full max-w-lg">
-              <TagSelect />
-              <FormMessage />
-            </FormItem>
+            <Suspense fallback={<Spinner />}>
+              <FormItem {...field} className="w-full max-w-lg">
+                <TagSelect />
+                <FormMessage />
+              </FormItem>
+            </Suspense>
           )}
         />
         <Button type="submit" className="w-full max-w-lg">

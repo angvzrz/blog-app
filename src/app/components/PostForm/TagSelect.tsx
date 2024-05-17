@@ -1,3 +1,4 @@
+import { Tag } from '@prisma/client';
 import {
   Select,
   SelectContent,
@@ -6,12 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-interface TagSelectProps {
-  tags: Tag[];
-}
+const getTags = async () => {
+  const { data } = await axios.get('/api/tags');
+  return data;
+};
 
-export function TagSelect({ tags }: TagSelectProps) {
+export function TagSelect() {
+  const { data: tags } = useSuspenseQuery<Tag[]>({
+    queryKey: ['tags'],
+    queryFn: getTags,
+  });
+
   return (
     <Select>
       <SelectTrigger>
@@ -19,8 +28,11 @@ export function TagSelect({ tags }: TagSelectProps) {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="react">React</SelectItem>
-          
+          {tags.map((tag) => (
+            <SelectItem key={tag.id} value={tag.id}>
+              {tag.name}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>
