@@ -6,6 +6,8 @@ import { ContentArea } from './ContentArea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TitleInput } from './TitleInput';
 import { TagSelect } from './TagSelect';
+import { Suspense } from 'react';
+import { Spinner } from '../ui/spinner';
 import { Button } from '../ui/button';
 import { z } from 'zod';
 
@@ -50,10 +52,12 @@ export function PostForm({ submit, isEditing }: PostFormProps) {
           control={form.control}
           name="tagOption"
           render={({ field }) => (
-            <FormItem {...field} className="w-full max-w-lg">
-              <TagSelect />
-              <FormMessage />
-            </FormItem>
+            <Suspense fallback={<Spinner />}>
+              <FormItem {...field} className="w-full max-w-lg">
+                <TagSelect />
+                <FormMessage />
+              </FormItem>
+            </Suspense>
           )}
         />
         <Button type="submit" className="w-full max-w-lg">

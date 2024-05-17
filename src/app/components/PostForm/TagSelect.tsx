@@ -1,5 +1,4 @@
-import { UseFormReturn } from 'react-hook-form';
-import { FormField, FormItem } from '../ui/form';
+import { Tag } from '@prisma/client';
 import {
   Select,
   SelectContent,
@@ -8,9 +7,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { FormSchema } from './PostForm';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+const getTags = async () => {
+  const { data } = await axios.get('/api/tags');
+  return data;
+};
 
 export function TagSelect() {
+  const { data: tags } = useSuspenseQuery<Tag[]>({
+    queryKey: ['tags'],
+    queryFn: getTags,
+  });
+
   return (
     <Select>
       <SelectTrigger>
@@ -18,10 +28,11 @@ export function TagSelect() {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="react">React</SelectItem>
-          <SelectItem value="next">Next</SelectItem>
-          <SelectItem value="svelte">Svelte</SelectItem>
-          <SelectItem value="angular">Angular</SelectItem>
+          {tags.map((tag) => (
+            <SelectItem key={tag.id} value={tag.id}>
+              {tag.name}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>
