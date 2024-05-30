@@ -8,7 +8,7 @@ interface PostCardProps {
   readonly post: Post;
 }
 
-export function PostCard({ post: { title, content, tag } }: PostCardProps) {
+export function PostCard({ post: { id, title, content, tag } }: PostCardProps) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -17,7 +17,7 @@ export function PostCard({ post: { title, content, tag } }: PostCardProps) {
       </CardHeader>
       <CardFooter className="flex justify-end gap-1">
         <Badge>{tag.name}</Badge>
-        <Link href="/blog/1" passHref>
+        <Link href={`/blog/${id}`} passHref>
           <Button>Read more...</Button>
         </Link>
       </CardFooter>
