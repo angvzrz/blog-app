@@ -1,31 +1,24 @@
 'use client';
 
+import type { Form as FormType } from '@/types/types';
 import { Form, FormField, FormItem, FormMessage } from '../ui/form';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ContentArea } from './ContentArea';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { formSchema } from '@/lib/validations';
 import { TitleInput } from './TitleInput';
 import { TagSelect } from './TagSelect';
 import { Suspense } from 'react';
 import { Spinner } from '../ui/spinner';
 import { Button } from '../ui/button';
-import { z } from 'zod';
-
-const formSchema = z.object({
-  postTitle: z.string().min(1, { message: 'Please add a title' }),
-  postContent: z.string().min(1),
-  tagOption: z.string().min(1, { message: 'Please select a tag' }),
-});
-
-export type FormSchema = z.infer<typeof formSchema>;
 
 interface PostFormProps {
-  readonly submit: SubmitHandler<FormSchema>;
+  readonly submit: SubmitHandler<FormType>;
   readonly isEditing: boolean;
 }
 
 export function PostForm({ submit, isEditing }: PostFormProps) {
-  const form = useForm<FormSchema>({
+  const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
     defaultValues: { postTitle: '', postContent: '', tagOption: '' },
   });

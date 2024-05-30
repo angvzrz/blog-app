@@ -1,11 +1,12 @@
 'use client';
 
+import type { Form } from '@/types/types';
 import { SubmitHandler } from 'react-hook-form';
-import { FormSchema, PostForm } from '../components/PostForm/PostForm';
+import { PostForm } from '../components/PostForm/PostForm';
 import { BackButton } from '../components/BackButton';
 
 export default function CreatePage() {
-  const handleCreatePost: SubmitHandler<FormSchema> = (data) => {};
+  const handleCreatePost: SubmitHandler<Form> = (data) => {};
   return (
     <div>
       <BackButton />
