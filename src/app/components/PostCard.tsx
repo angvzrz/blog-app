@@ -1,11 +1,11 @@
+import type { Post } from '@/types/types';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
-import { PostSchema } from '@/types/types';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import Link from 'next/link';
 
 interface PostCardProps {
-  readonly post: PostSchema;
+  readonly post: Post;
 }
 
 export function PostCard({ post: { title, content, tag } }: PostCardProps) {
