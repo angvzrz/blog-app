@@ -20,7 +20,7 @@ interface PostFormProps {
 export function PostForm({ submit, isEditing }: PostFormProps) {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
-    defaultValues: { postTitle: '', postContent: '', tagOption: '' },
+    defaultValues: { title: '', content: '', tagId: '' },
   });
   const { register, handleSubmit } = { ...form };
 
@@ -32,7 +32,7 @@ export function PostForm({ submit, isEditing }: PostFormProps) {
       >
         <FormField
           control={form.control}
-          name="postTitle"
+          name="title"
           render={({ field }) => (
             <FormItem {...field} className="w-full max-w-lg">
               <TitleInput />
@@ -40,10 +40,10 @@ export function PostForm({ submit, isEditing }: PostFormProps) {
             </FormItem>
           )}
         />
-        <ContentArea {...register('postContent')} />
+        <ContentArea {...register('content')} />
         <FormField
           control={form.control}
-          name="tagOption"
+          name="tagId"
           render={({ field }) => (
             <Suspense fallback={<Spinner />}>
               <FormItem {...field} className="w-full max-w-lg">
