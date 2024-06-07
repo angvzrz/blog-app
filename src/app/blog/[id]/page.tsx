@@ -39,7 +39,7 @@ export default async function BlogDetailsPage({ params }: BlogDetailsPageProps) 
       <BackButton />
       <div className="mb-8">
         <h2 className="text-2xl font-bold my-4">{post.title}</h2>
-        <ButtonAction />
+        <ButtonAction postId={params.id} />
       </div>
       <Badge>{post.tag.name}</Badge>
       <p className="text-slate-700">{post.content}</p>

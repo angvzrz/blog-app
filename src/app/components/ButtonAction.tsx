@@ -1,8 +1,37 @@
-import Link from 'next/link';
-import { Button } from './ui/button';
-import { Pencil, Trash } from 'lucide-react';
+'use client';
 
-export function ButtonAction() {
+import { Pencil, Trash } from 'lucide-react';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { Button } from './ui/button';
+import { z } from 'zod';
+import axios from 'axios';
+import Link from 'next/link';
+
+interface ButtonActionProps {
+  readonly postId: string;
+}
+
+export function ButtonAction({ postId }: ButtonActionProps) {
+  const router = useRouter();
+  const { mutate: deletePost } = useMutation({
+    mutationFn: async () => {
+      const validatedPostId = z.string().cuid().safeParse(postId);
+      
+      if (!validatedPostId.success) {
+        throw new Error(validatedPostId.error.message);
+      }
+      
+      return axios.delete(`/api/posts/${validatedPostId.data}`);
+    },
+    onError: (error) => {
+      throw new Error(error.message);
+    },
+    onSuccess: () => {
+      router.push('/');
+      router.refresh();
+    },
+  });
   return (
     <div>
       <Link className="mr-2" href="/edit/id" passHref>
@@ -11,7 +40,7 @@ export function ButtonAction() {
         </Button>
       </Link>
 
-      <Button variant="destructive">
+      <Button variant="destructive" onClick={() => deletePost()}>
         <Trash className="mr-2 h-4 w-4" /> Delete
       </Button>
     </div>
