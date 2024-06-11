@@ -1,5 +1,7 @@
 import { Loader2 } from 'lucide-react';
 
-export const Spinner = () => {
-  return <Loader2 className="animate-spin" />;
+type Loader2Props = React.ComponentProps<typeof Loader2>;
+
+export const Spinner = (props: Loader2Props) => {
+  return <Loader2 {...props} className={`animate-spin ${props.className}`} />;
 };

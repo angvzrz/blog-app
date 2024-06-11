@@ -3,6 +3,7 @@
 import { Pencil, Trash } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { Spinner } from './ui/spinner';
 import { Button } from './ui/button';
 import { z } from 'zod';
 import axios from 'axios';
@@ -14,14 +15,14 @@ interface ButtonActionProps {
 
 export function ButtonAction({ postId }: ButtonActionProps) {
   const router = useRouter();
-  const { mutate: deletePost } = useMutation({
+  const { mutate: deletePost, isPending } = useMutation({
     mutationFn: async () => {
       const validatedPostId = z.string().cuid().safeParse(postId);
-      
+
       if (!validatedPostId.success) {
         throw new Error(validatedPostId.error.message);
       }
-      
+
       return axios.delete(`/api/posts/${validatedPostId.data}`);
     },
     onError: (error) => {
@@ -41,7 +42,15 @@ export function ButtonAction({ postId }: ButtonActionProps) {
       </Link>
 
       <Button variant="destructive" onClick={() => deletePost()}>
-        <Trash className="mr-2 h-4 w-4" /> Delete
+        {isPending ? (
+          <>
+            <Spinner className="mr-2 h-4 w-4" /> Deleting
+          </>
+        ) : (
+          <>
+            <Trash className="mr-2 h-4 w-4" /> Delete
+          </>
+        )}
       </Button>
     </div>
   );
