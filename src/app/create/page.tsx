@@ -7,7 +7,9 @@ import { BackButton } from '../components/BackButton';
 import { formSchema } from '@/lib/validations';
 import { useRouter } from 'next/navigation';
 import { PostForm } from '../components/PostForm/PostForm';
+import { Suspense } from 'react';
 import axios from 'axios';
+import Loading from './loading';
 
 export default function CreatePage() {
   const router = useRouter();
@@ -35,10 +37,10 @@ export default function CreatePage() {
   };
 
   return (
-    <div>
+    <Suspense fallback={<Loading />}>
       <BackButton />
       <h2 className="text-2xl my-4 font-bold text-center">Add new post</h2>
       <PostForm submit={handleCreatePost} isEditing={false} />
-    </div>
+    </Suspense>
   );
 }

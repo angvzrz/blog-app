@@ -1,9 +1,11 @@
 'use client';
 
 import { SubmitHandler } from 'react-hook-form';
+import { Suspense } from 'react';
 import { PostForm } from '@/app/components/PostForm/PostForm';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { Form } from '@/types/types';
+import Loading from './loading';
 import axios from 'axios';
 
 interface EditPostPageProps {
@@ -13,7 +15,7 @@ interface EditPostPageProps {
 }
 
 export default function EditPostPage({ params }: EditPostPageProps) {
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ['posts', params.id],
     queryFn: async () => {
       const { id } = params;
@@ -25,9 +27,9 @@ export default function EditPostPage({ params }: EditPostPageProps) {
   const handleEditPost: SubmitHandler<Form> = (data) => {};
 
   return (
-    <div>
+    <Suspense fallback={<Loading />}>
       <h2 className="text-2xl my-4 font-bold text-center">Edit post</h2>
-      <PostForm submit={handleEditPost} isEditing={false} />
-    </div>
+      <PostForm submit={handleEditPost} postToEdit={data} isEditing />
+    </Suspense>
   );
 }
