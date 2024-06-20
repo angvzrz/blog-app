@@ -1,9 +1,11 @@
 'use client';
 
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import { SubmitHandler } from 'react-hook-form';
+import { formSchema } from '@/lib/validations';
+import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 import { PostForm } from '@/app/components/PostForm/PostForm';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { Form } from '@/types/types';
 import Loading from './loading';
 import axios from 'axios';
@@ -15,16 +17,39 @@ interface EditPostPageProps {
 }
 
 export default function EditPostPage({ params }: EditPostPageProps) {
+  const { id } = params;
+  const router = useRouter();
+
   const { data } = useSuspenseQuery({
     queryKey: ['posts', params.id],
     queryFn: async () => {
-      const { id } = params;
       const response = await axios.get(`/api/posts/${id}`);
       return response.data;
     },
   });
 
-  const handleEditPost: SubmitHandler<Form> = (data) => {};
+  const { mutate: updatePost } = useMutation({
+    mutationFn: (newData: Form) => {
+      const validatedPost = formSchema.safeParse(newData);
+
+      if (!validatedPost.success) {
+        throw new Error(validatedPost.error.message);
+      }
+
+      return axios.patch(`/api/posts/${id}`, validatedPost.data);
+    },
+    onError: (error) => {
+      throw new Error(error.message);
+    },
+    onSuccess: () => {
+      router.push('/');
+      router.refresh();
+    },
+  });
+
+  const handleEditPost: SubmitHandler<Form> = (data) => {
+    updatePost(data);
+  };
 
   return (
     <Suspense fallback={<Loading />}>
