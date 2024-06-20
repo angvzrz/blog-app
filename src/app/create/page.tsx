@@ -13,7 +13,7 @@ import Loading from './loading';
 
 export default function CreatePage() {
   const router = useRouter();
-  const { mutate: createPost } = useMutation({
+  const { mutate: createPost, isPending } = useMutation({
     mutationFn: (newPost: Form) => {
       const validatedPost = formSchema.safeParse(newPost);
 
@@ -40,7 +40,7 @@ export default function CreatePage() {
     <Suspense fallback={<Loading />}>
       <BackButton />
       <h2 className="text-2xl my-4 font-bold text-center">Add new post</h2>
-      <PostForm submit={handleCreatePost} isEditing={false} />
+      <PostForm submit={handleCreatePost} isEditing={false} isLoadingSubmit={isPending} />
     </Suspense>
   );
 }

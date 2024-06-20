@@ -15,15 +15,28 @@ import { Button } from '../ui/button';
 interface PostFormProps {
   readonly postToEdit?: Post;
   readonly isEditing: boolean;
+  readonly isLoadingSubmit: boolean;
   readonly submit: SubmitHandler<FormType>;
 }
 
-export function PostForm({ postToEdit, isEditing, submit }: PostFormProps) {
+export function PostForm({
+  postToEdit,
+  isEditing,
+  isLoadingSubmit,
+  submit,
+}: PostFormProps) {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
     defaultValues: postToEdit || { title: '', content: '', tagId: '' },
   });
   const { register, handleSubmit } = { ...form };
+
+  let buttonText = '';
+  if (isLoadingSubmit) {
+    buttonText = isEditing ? 'Updating...' : 'Creating...';
+  } else {
+    buttonText = isEditing ? 'Update' : 'Create';
+  }
 
   return (
     <Form {...form}>
@@ -55,7 +68,8 @@ export function PostForm({ postToEdit, isEditing, submit }: PostFormProps) {
           )}
         />
         <Button type="submit" className="w-full max-w-lg">
-          {isEditing ? 'Update' : 'Create'}
+          {isLoadingSubmit && <Spinner />}
+          {buttonText}
         </Button>
       </form>
     </Form>

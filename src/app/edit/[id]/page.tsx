@@ -28,7 +28,7 @@ export default function EditPostPage({ params }: EditPostPageProps) {
     },
   });
 
-  const { mutate: updatePost } = useMutation({
+  const { mutate: updatePost, isPending } = useMutation({
     mutationFn: (newData: Form) => {
       const validatedPost = formSchema.safeParse(newData);
 
@@ -54,7 +54,12 @@ export default function EditPostPage({ params }: EditPostPageProps) {
   return (
     <Suspense fallback={<Loading />}>
       <h2 className="text-2xl my-4 font-bold text-center">Edit post</h2>
-      <PostForm submit={handleEditPost} postToEdit={data} isEditing />
+      <PostForm
+        submit={handleEditPost}
+        postToEdit={data}
+        isEditing
+        isLoadingSubmit={isPending}
+      />
     </Suspense>
   );
 }
