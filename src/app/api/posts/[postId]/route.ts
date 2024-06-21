@@ -56,28 +56,3 @@ export async function PATCH(request: NextRequest, context: ContextProps) {
     return NextResponse.json({ message: 'could not update post', status: 500 });
   }
 }
-
-export async function GET(context: ContextProps) {
-  const postId = context.params.postId;
-  const validatedPostId = z.string().cuid().safeParse(postId);
-
-  if (!validatedPostId.success) {
-    return NextResponse.json(validatedPostId.error.message, { status: 422 });
-  }
-
-  const validPostId = validatedPostId.data;
-
-  try {
-    const post = await prisma.post.findFirst({
-      where: { id: validPostId },
-      include: { tag: true },
-    });
-
-    return NextResponse.json(post, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { message: `could not fetch post with id: ${validPostId}` },
-      { status: 500 },
-    );
-  }
-}

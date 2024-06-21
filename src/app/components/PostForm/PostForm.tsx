@@ -1,6 +1,6 @@
 'use client';
 
-import type { Form as FormType, Post } from '@/types/types';
+import type { Form as FormType } from '@/types/types';
 import { Form, FormField, FormItem, FormMessage } from '../ui/form';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ContentArea } from './ContentArea';
@@ -11,37 +11,18 @@ import { TagSelect } from './TagSelect';
 import { Suspense } from 'react';
 import { Spinner } from '../ui/spinner';
 import { Button } from '../ui/button';
-import { cn } from '@/lib/utils';
 
 interface PostFormProps {
-  readonly postToEdit?: Post;
-  readonly isEditing: boolean;
-  readonly isLoadingSubmit: boolean;
   readonly submit: SubmitHandler<FormType>;
+  readonly isEditing: boolean;
 }
 
-export function PostForm({
-  postToEdit,
-  isEditing,
-  isLoadingSubmit,
-  submit,
-}: PostFormProps) {
+export function PostForm({ submit, isEditing }: PostFormProps) {
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
-    defaultValues: postToEdit || { title: '', content: '', tagId: '' },
+    defaultValues: { title: '', content: '', tagId: '' },
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { isDirty, isSubmitted },
-  } = { ...form };
-
-  let buttonText = '';
-  if (isLoadingSubmit) {
-    buttonText = isEditing ? 'Updating...' : 'Creating...';
-  } else {
-    buttonText = isEditing ? 'Update' : 'Create';
-  }
+  const { register, handleSubmit } = { ...form };
 
   return (
     <Form {...form}>
@@ -50,35 +31,30 @@ export function PostForm({
         onSubmit={handleSubmit(submit)}
       >
         <FormField
-          name="title"
           control={form.control}
+          name="title"
           render={({ field }) => (
-            <FormItem className="w-full max-w-lg">
-              <TitleInput {...field} />
+            <FormItem {...field} className="w-full max-w-lg">
+              <TitleInput />
               <FormMessage />
             </FormItem>
           )}
         />
         <ContentArea {...register('content')} />
         <FormField
-          name="tagId"
           control={form.control}
+          name="tagId"
           render={({ field }) => (
             <Suspense fallback={<Spinner />}>
-              <FormItem className="w-full max-w-lg">
-                <TagSelect {...field} />
+              <FormItem {...field} className="w-full max-w-lg">
+                <TagSelect />
                 <FormMessage />
               </FormItem>
             </Suspense>
           )}
         />
-        <Button
-          type="submit"
-          className={cn('w-full max-w-lg', isLoadingSubmit && 'disabled')}
-          disabled={!isDirty || isSubmitted}
-        >
-          {isLoadingSubmit && <Spinner />}
-          {buttonText}
+        <Button type="submit" className="w-full max-w-lg">
+          {isEditing ? 'Update' : 'Create'}
         </Button>
       </form>
     </Form>

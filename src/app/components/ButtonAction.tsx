@@ -33,10 +33,9 @@ export function ButtonAction({ postId }: ButtonActionProps) {
       router.refresh();
     },
   });
-
   return (
     <div>
-      <Link className="mr-2" href={`/edit/${postId}`} passHref>
+      <Link className="mr-2" href="/edit/id" passHref>
         <Button>
           <Pencil className="mr-2 h-4 w-4" /> Edit
         </Button>
