@@ -11,6 +11,7 @@ import { TagSelect } from './TagSelect';
 import { Suspense } from 'react';
 import { Spinner } from '../ui/spinner';
 import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
 
 interface PostFormProps {
   readonly postToEdit?: Post;
@@ -29,7 +30,11 @@ export function PostForm({
     resolver: zodResolver(formSchema),
     defaultValues: postToEdit || { title: '', content: '', tagId: '' },
   });
-  const { register, handleSubmit } = { ...form };
+  const {
+    register,
+    handleSubmit,
+    formState: { isDirty, isSubmitted },
+  } = { ...form };
 
   let buttonText = '';
   if (isLoadingSubmit) {
@@ -67,7 +72,11 @@ export function PostForm({
             </Suspense>
           )}
         />
-        <Button type="submit" className="w-full max-w-lg">
+        <Button
+          type="submit"
+          className={cn('w-full max-w-lg', isLoadingSubmit && 'disabled')}
+          disabled={!isDirty || isSubmitted}
+        >
           {isLoadingSubmit && <Spinner />}
           {buttonText}
         </Button>
