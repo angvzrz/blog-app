@@ -57,7 +57,7 @@ export async function PATCH(request: NextRequest, context: ContextProps) {
   }
 }
 
-export async function GET(context: ContextProps) {
+export async function GET(req: NextRequest, context: ContextProps) {
   const postId = context.params.postId;
   const validatedPostId = z.string().cuid().safeParse(postId);
 
