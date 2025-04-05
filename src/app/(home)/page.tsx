@@ -1,6 +1,6 @@
 import type { Post } from '@/types/types';
 import { postSchema } from '@/lib/validations';
-import { PostCard } from './components/PostCard';
+import { PostCard } from '../components/PostCard';
 import { z } from 'zod';
 import prisma from '@/lib/db';
 
