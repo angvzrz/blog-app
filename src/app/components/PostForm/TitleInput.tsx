@@ -10,7 +10,7 @@ export const TitleInput = forwardRef<HTMLInputElement, InputProps>(
         type="text"
         className="max-w-lg"
         id="name"
-        placeholder="post title..."
+        placeholder="Post title..."
       />
     );
   },

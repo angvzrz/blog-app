@@ -1,16 +1,22 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas  = ["blog_app_db"]
 }
 
 model Tag {
   id   String @id @default(cuid())
   name String @db.VarChar(100)
   post Post[]
+
+  @@map("blog_app_tag")
+  @@schema("blog_app_db")
 }
 
 model Post {
@@ -21,4 +27,7 @@ model Post {
   updatedAt DateTime @default(now())
   tagId     String
   tag       Tag      @relation(fields: [tagId], references: [id])
+
+  @@map("blog_app_post")
+  @@schema("blog_app_db")
 }
