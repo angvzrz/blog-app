@@ -10,11 +10,11 @@ import {
 import { ControllerRenderProps } from 'react-hook-form';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { forwardRef } from 'react';
-import axios from 'axios';
+import prisma from '@/lib/db';
 
 const getTags = async () => {
-  const { data } = await axios.get('/api/tags');
-  return data;
+  const tags = await prisma.tag.findMany();
+  return tags;
 };
 
 export const TagSelect = forwardRef<HTMLSelectElement, ControllerRenderProps>(
