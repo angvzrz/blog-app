@@ -10,7 +10,7 @@ export function Navbar() {
         <CardTitle className="flex justify-between items-center">
           <Link href="/" className="flex gap-2">
             <BookOpenCheck />
-            <h1>Blogit</h1>
+            <span>Blogit</span>
           </Link>
           <Link href="/create" passHref>
             <Button>Create Post</Button>

@@ -3,6 +3,8 @@ import { postSchema } from '@/lib/validations';
 import { PostCard } from '../components/PostCard';
 import { z } from 'zod';
 import prisma from '@/lib/db';
+import { HeroSection } from '../components/Home/HeroSection';
+import { cn } from '@/lib/utils';
 
 const postsSchema = z.array(postSchema);
 
@@ -34,10 +36,18 @@ export default async function Home() {
   const posts = await getPosts();
 
   return (
-    <main className="grid items-center justify-center md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+    <main
+      className={cn(
+        posts.length
+          ? 'grid items-center justify-center md:grid-cols-2 lg:grid-cols-3 gap-4'
+          : 'flex items-center justify-center',
+      )}
+    >
+      {posts.length ? (
+        posts.map((post) => <PostCard key={post.id} post={post} />)
+      ) : (
+        <HeroSection />
+      )}
     </main>
   );
 }
