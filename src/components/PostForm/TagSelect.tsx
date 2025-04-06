@@ -1,3 +1,5 @@
+'use client';
+
 import { Tag } from '@prisma/client';
 import {
   Select,
@@ -10,11 +12,11 @@ import {
 import { ControllerRenderProps } from 'react-hook-form';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { forwardRef } from 'react';
-import prisma from '@/lib/db';
+import axios from 'axios';
 
 const getTags = async () => {
-  const tags = await prisma.tag.findMany();
-  return tags;
+  const { data } = await axios.get('/api/tags');
+  return data;
 };
 
 export const TagSelect = forwardRef<HTMLSelectElement, ControllerRenderProps>(
