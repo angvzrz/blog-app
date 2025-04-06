@@ -1,4 +1,4 @@
-import Home from "@/app/page";
+import Home from "@/app/(home)/page";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof Home> = {
