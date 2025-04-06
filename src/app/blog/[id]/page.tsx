@@ -1,8 +1,8 @@
-import type { Post } from '@/types/types';
+import { ButtonAction } from '@/components/ButtonAction';
+import { BackButton } from '@/components/BackButton';
 import { postSchema } from '@/lib/validations';
-import { BackButton } from '@/app/components/BackButton';
-import { ButtonAction } from '@/app/components/ButtonAction';
-import { Badge } from '@/app/components/ui/badge';
+import { Badge } from '@/components/ui/badge';
+import type { Post } from '@/types/types';
 import prisma from '@/lib/db';
 
 interface BlogDetailsPageProps {

@@ -1,10 +1,10 @@
+import { z } from 'zod';
 import type { Post } from '@/types/types';
 import { postSchema } from '@/lib/validations';
-import { PostCard } from '../components/PostCard';
-import { z } from 'zod';
-import prisma from '@/lib/db';
-import { HeroSection } from '../components/Home/HeroSection';
+import { HeroSection } from '@/components/Home/HeroSection';
+import { PostCard } from '@/components/PostCard';
 import { cn } from '@/lib/utils';
+import prisma from '@/lib/db';
 
 const postsSchema = z.array(postSchema);
 

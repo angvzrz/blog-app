@@ -3,7 +3,7 @@ import { Button } from '../ui/button';
 import { Card } from '../ui/card';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import blogpost from '../../../../public/blogpost.svg';
+import blogpost from '../../../public/blogpost.svg';
 import Link from 'next/link';
 
 export function HeroSection() {

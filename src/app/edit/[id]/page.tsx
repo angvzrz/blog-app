@@ -5,7 +5,7 @@ import { SubmitHandler } from 'react-hook-form';
 import { formSchema } from '@/lib/validations';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
-import { PostForm } from '@/app/components/PostForm/PostForm';
+import { PostForm } from '@/components/PostForm/PostForm';
 import { Form } from '@/types/types';
 import Loading from './loading';
 import axios from 'axios';

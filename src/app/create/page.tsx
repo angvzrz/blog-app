@@ -3,10 +3,10 @@
 import type { Form } from '@/types/types';
 import { SubmitHandler } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { BackButton } from '../components/BackButton';
+import { BackButton } from '@/components/BackButton';
 import { formSchema } from '@/lib/validations';
 import { useRouter } from 'next/navigation';
-import { PostForm } from '../components/PostForm/PostForm';
+import { PostForm } from '@/components/PostForm/PostForm';
 import { Suspense } from 'react';
 import axios from 'axios';
 import Loading from './loading';
