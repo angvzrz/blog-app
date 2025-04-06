@@ -1,4 +1,4 @@
-import { PostCard } from "@/app/components/PostCard";
+import { PostCard } from "@/components/PostCard";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof PostCard> = {
