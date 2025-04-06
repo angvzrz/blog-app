@@ -15,7 +15,10 @@ export async function DELETE(res: NextApiResponse, context: ContextProps) {
   const validatedPostId = z.string().cuid().safeParse(postId);
 
   if (!validatedPostId.success) {
-    return res.status(422).json({ message: validatedPostId.error.message });
+    return NextResponse.json({
+      message: validatedPostId.error.message,
+      status: 422,
+    });
   }
 
   try {
@@ -25,7 +28,7 @@ export async function DELETE(res: NextApiResponse, context: ContextProps) {
 
     return NextResponse.json({ message: 'post deleted', status: 200 });
   } catch (error) {
-    return res.status(500).json({ error: 'could not delete post' });
+    return NextResponse.json({ message: 'could not delete post', status: 500 });
   }
 }
 
