@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { formSchema } from '@/lib/validations';
 import { z } from 'zod';
 import prisma from '@/lib/db';
-import { NextApiResponse } from 'next';
 
 interface ContextProps {
   params: {
@@ -10,7 +9,7 @@ interface ContextProps {
   };
 }
 
-export async function DELETE(res: NextApiResponse, context: ContextProps) {
+export async function DELETE(request: NextRequest, context: ContextProps) {
   const postId = context.params.postId;
   const validatedPostId = z.string().cuid().safeParse(postId);
 
