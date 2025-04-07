@@ -1,5 +1,6 @@
-'use client';
-
+import { forwardRef } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { ControllerRenderProps } from 'react-hook-form';
 import { Tag } from '@prisma/client';
 import {
   Select,
@@ -9,22 +10,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { ControllerRenderProps } from 'react-hook-form';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { forwardRef } from 'react';
-import axios from 'axios';
-
-const getTags = async () => {
-  const { data } = await axios.get('/api/tags');
-  return data;
-};
+import { Spinner } from '../ui/spinner';
+import { getTags } from '@/server/functions';
 
 export const TagSelect = forwardRef<HTMLSelectElement, ControllerRenderProps>(
   function TagSelect(props, ref) {
-    const { data: tags } = useSuspenseQuery<Tag[]>({
+    const { data: tags, isLoading } = useQuery<Tag[]>({
       queryKey: ['tags'],
       queryFn: getTags,
     });
+
+    if (isLoading) return <Spinner className="w-full" />;
 
     return (
       <Select {...props} onValueChange={props.onChange}>
@@ -33,11 +29,12 @@ export const TagSelect = forwardRef<HTMLSelectElement, ControllerRenderProps>(
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {tags.map((tag) => (
-              <SelectItem key={tag.id} value={tag.id}>
-                {tag.name}
-              </SelectItem>
-            ))}
+            {tags &&
+              tags.map((tag) => (
+                <SelectItem key={tag.id} value={tag.id}>
+                  {tag.name}
+                </SelectItem>
+              ))}
           </SelectGroup>
         </SelectContent>
       </Select>

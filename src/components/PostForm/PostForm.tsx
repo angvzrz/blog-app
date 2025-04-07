@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { formSchema } from '@/lib/validations';
 import { TitleInput } from './TitleInput';
 import { TagSelect } from './TagSelect';
-import { Suspense } from 'react';
 import { Spinner } from '../ui/spinner';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
@@ -64,12 +63,10 @@ export function PostForm({
           name="tagId"
           control={form.control}
           render={({ field }) => (
-            <Suspense fallback={<Spinner />}>
-              <FormItem className="w-full max-w-lg">
-                <TagSelect {...field} />
-                <FormMessage />
-              </FormItem>
-            </Suspense>
+            <FormItem className="w-full max-w-lg">
+              <TagSelect {...field} />
+              <FormMessage />
+            </FormItem>
           )}
         />
         <Button
